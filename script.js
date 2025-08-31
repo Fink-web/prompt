@@ -1,27 +1,37 @@
-// --- Lógica de Copiado ---
+// --- Lógica de Copiado con Diagnóstico ---
+console.log('Script de copiado cargado correctamente.'); // Mensaje 1: Confirma que el archivo carga
+
 const copyButton = document.getElementById('copyButton');
 
-// El único cambio es mover la línea que lee el texto DENTRO del 'click listener'
 copyButton.addEventListener('click', () => {
-    // Esta línea ahora se ejecuta solo cuando se hace clic, asegurando que el texto exista.
-    const promptText = document.getElementById('prompt-text').innerText;
+    console.log('Botón "Copiar Prompt" fue clickeado.'); // Mensaje 2: Confirma que el clic funciona
 
-    // Usamos la API del portapapeles, que es la forma moderna y segura
+    const promptText = document.getElementById('prompt-text').innerText;
+    
+    console.log('Texto que se intentará copiar:', promptText); // Mensaje 3: Muestra el texto que capturó
+
+    // Comprobamos si el texto está vacío
+    if (!promptText || promptText.trim() === '') {
+        console.error('Error: El texto a copiar está vacío.');
+        copyButton.textContent = 'Error: No hay texto';
+        return; // Detenemos la ejecución si no hay texto
+    }
+
     navigator.clipboard.writeText(promptText).then(() => {
-        // Éxito al copiar
+        console.log('Éxito: El texto fue copiado al portapapeles.'); // Mensaje 4: Confirma el éxito
         copyButton.textContent = '¡Copiado!';
         copyButton.classList.add('copied');
         
-        // Volver al estado original después de 2 segundos
         setTimeout(() => {
             copyButton.textContent = 'Copiar Prompt';
             copyButton.classList.remove('copied');
         }, 2000);
+
     }).catch(err => {
-        // Manejo de error
-        console.error('Error al copiar el texto: ', err);
+        console.error('FALLO: Ocurrió un error al usar la API del portapapeles:', err); // Mensaje 5: Muestra el error exacto
         copyButton.textContent = 'Error al copiar';
-            setTimeout(() => {
+        
+        setTimeout(() => {
             copyButton.textContent = 'Copiar Prompt';
         }, 2000);
     });
