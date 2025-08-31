@@ -1,8 +1,11 @@
 // --- Lógica de Copiado ---
 const copyButton = document.getElementById('copyButton');
-const promptText = document.getElementById('prompt-text').innerText;
 
+// El único cambio es mover la línea que lee el texto DENTRO del 'click listener'
 copyButton.addEventListener('click', () => {
+    // Esta línea ahora se ejecuta solo cuando se hace clic, asegurando que el texto exista.
+    const promptText = document.getElementById('prompt-text').innerText;
+
     // Usamos la API del portapapeles, que es la forma moderna y segura
     navigator.clipboard.writeText(promptText).then(() => {
         // Éxito al copiar
